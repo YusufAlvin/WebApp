@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+	<SpaRoot>ClientApp\</SpaRoot>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.12" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sequence\Robot.csproj" />
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec WorkingDirectory="$(SpaRoot)" Command="yarn" />
+	<Exec WorkingDirectory="$(SpaRoot)" Command="yarn build" />
+  </Target>
+
+    <Target Name="PostBuild" Condition=" '$(OS)' != 'Unix'" AfterTargets="PostBuildEvent">
+	    <Exec Command="xcopy &quot;$(ProjectDir)clientapp\build\*.*&quot; &quot;$(TargetDir)wwwroot\&quot; /s /e /y" />
+    </Target>
+
+</Project>

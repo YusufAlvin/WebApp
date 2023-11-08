@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34202.233
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebServer", "WebServer\WebServer.csproj", "{A24E6BC2-0CF7-4460-BA95-ABD09C06B73E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Robot", "Sequence\Robot.csproj", "{390D2D8B-9B13-4BA3-AC14-11B1EE20D977}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggingLibrary", "LoggingLibrary\LoggingLibrary.csproj", "{7E7CF68B-6920-43A8-8E6C-BF96C6943921}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A24E6BC2-0CF7-4460-BA95-ABD09C06B73E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A24E6BC2-0CF7-4460-BA95-ABD09C06B73E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A24E6BC2-0CF7-4460-BA95-ABD09C06B73E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A24E6BC2-0CF7-4460-BA95-ABD09C06B73E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{390D2D8B-9B13-4BA3-AC14-11B1EE20D977}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{390D2D8B-9B13-4BA3-AC14-11B1EE20D977}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{390D2D8B-9B13-4BA3-AC14-11B1EE20D977}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{390D2D8B-9B13-4BA3-AC14-11B1EE20D977}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E7CF68B-6920-43A8-8E6C-BF96C6943921}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E7CF68B-6920-43A8-8E6C-BF96C6943921}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E7CF68B-6920-43A8-8E6C-BF96C6943921}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E7CF68B-6920-43A8-8E6C-BF96C6943921}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {12D28E1B-1CBD-4FA3-889B-43A18FB2BD70}
+	EndGlobalSection
+EndGlobal
