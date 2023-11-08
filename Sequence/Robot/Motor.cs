@@ -42,10 +42,15 @@ public class Motor : IMotor
             while (_position != destination)
             {
 
-                if (_status == Status.Stopped) break;
+                if (_status == Status.Stopped)
+                {
+                    _logger.Info($"motor {_name} stopped");
+                    break;
+                }
 
                 if (_status == Status.Paused)
                 {
+                    _logger.Info($"motor {_name} paused");
                     _waitPause.WaitOne();
                 }
 
@@ -54,10 +59,15 @@ public class Motor : IMotor
                 _logger.Info($"{_name}: {_position}");
                 Thread.Sleep(_speed);
 
-                if (_status == Status.Stopped) break;
+                if (_status == Status.Stopped)
+                {
+                    _logger.Info($"motor {_name} stopped");
+                    break;
+                }
 
                 if (_status == Status.Paused)
                 {
+                    _logger.Info($"motor {_name} paused");
                     _waitPause.WaitOne();
                 }
             }
