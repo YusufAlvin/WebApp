@@ -1,6 +1,9 @@
 ﻿using LoggingLibrary;
-using Robot.Enums;
-using Robot.Sequence.Data;
+using Data.Dto;
+using Timer = System.Timers.Timer;
+using Easy.MessageHub;
+using Data;
+using Robot.EventArguments;
 
 namespace Robot;
 
@@ -11,21 +14,34 @@ public class SequenceManager : ISequenceManager
     private Status _status;
     private ManualResetEventSlim _pauseEventSlim;
     private readonly LoggerService<SequenceManager> _logger;
+    private readonly IMessageHub _messageHub;
+    private readonly int[] _currentPosition = new int[] {0,0};
+
     public Status Status
     {
         get { lock (statusLock) { return _status; } }
         private set { lock (statusLock) { _status = value; } }
     }
 
-    public SequenceManager(RobotManager robotManager, LoggerService<SequenceManager> logger)
+    public SequenceManager(RobotManager robotManager, LoggerService<SequenceManager> logger, IMessageHub messageHub)
     {
         _status = Status.Idle;
         _robotManager = robotManager;
         _pauseEventSlim = new ManualResetEventSlim(false);
         _logger = logger;
+        _messageHub = messageHub;
+
+        _messageHub.Subscribe<PositionChangedEventArgs>(PositionChangeHandler);
     }
 
-    public bool Start(SequenceData sequenceData)
+    private void PositionChangeHandler(PositionChangedEventArgs arg)
+    {
+        _currentPosition[0] = arg.x;
+        _currentPosition[1] = arg.y;
+        SequenceProgressChange();
+    }
+
+    public bool Start(SequenceDto sequenceDto)
     {
         if (Status != Status.Idle)
         {
@@ -35,7 +51,8 @@ public class SequenceManager : ISequenceManager
         Task.Run(async () =>
         {
             Status = Status.Running;
-            foreach (var sequence in sequenceData.Sequence)
+            SequenceProgressChange();
+            foreach (var sequence in sequenceDto.Sequences)
             {
                 if (_status == Status.Stopped)
                 {
@@ -56,10 +73,21 @@ public class SequenceManager : ISequenceManager
         return true;
     }
 
+    private void SequenceProgressChange()
+    {
+        var message = new SequenceProgress() 
+        {
+            Status = _status.ToString(),
+            CurrentPosition = _currentPosition,
+        };
+        _messageHub.Publish(message);
+    }
+
     public void Stop()
     {
         Status = Status.Stopped;
         _robotManager.Stop();
+        SequenceProgressChange();
     }
 
     public void Pause()
@@ -67,6 +95,7 @@ public class SequenceManager : ISequenceManager
         _robotManager.Pause();
         Status = Status.Paused;
         _pauseEventSlim.Reset();
+        SequenceProgressChange();
     }
 
     public void Resume()
@@ -74,5 +103,6 @@ public class SequenceManager : ISequenceManager
         _robotManager.Resume();
         Status = Status.Running;        
         _pauseEventSlim.Set();
+        SequenceProgressChange();
     }
 }

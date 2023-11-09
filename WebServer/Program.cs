@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Http.Connections;
+using WebServer.Hubs;
+
 string webroot = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot");
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions()
@@ -23,17 +26,20 @@ var app = builder.Build();
 //    app.UseSwaggerUI();
 //}
 
+app.UseRouting();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API");
 });
-
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
+app.MapHub<InstrumentHub>("hub/instrument-hub", options =>
+{
+    options.Transports = HttpTransportType.WebSockets;
+});
+
 
 string rootPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot");
 DefaultFilesOptions fileOpt = new DefaultFilesOptions();

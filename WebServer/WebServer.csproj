@@ -9,12 +9,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Easy.MessageHub" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Data\Data.csproj" />
     <ProjectReference Include="..\LoggingLibrary\LoggingLibrary.csproj" />
     <ProjectReference Include="..\Sequence\Robot.csproj" />
   </ItemGroup>

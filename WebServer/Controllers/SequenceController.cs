@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Robot;
-using Robot.Sequence.Data;
+using Data.Dto;
 
 namespace WebServer.Controllers;
 
 [ApiController]
-[Route("sequence")]
+[Route("api/sequence")]
 public class SequenceController : ControllerBase
 {
     private readonly SequenceManager _sequenceManager;
@@ -16,9 +16,9 @@ public class SequenceController : ControllerBase
     }
 
     [HttpPost("run-sequence")]
-    public ActionResult RunSequence(SequenceData sequenceData)
+    public ActionResult RunSequence(SequenceDto sequenceDto)
     {
-        var isSuccess = _sequenceManager.Start(sequenceData);
+        var isSuccess = _sequenceManager.Start(sequenceDto);
         
         if (isSuccess)
         {

@@ -1,6 +1,6 @@
-﻿namespace Robot.Sequence.Data;
+﻿namespace Data.Dto;
 
-public class SequenceItem
+public class SequenceItemDto
 {
     public int Id { get; set; }
     public int[] Position { get; set; }

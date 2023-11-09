@@ -1,4 +1,5 @@
-﻿using LoggingLibrary;
+﻿using Easy.MessageHub;
+using LoggingLibrary;
 using Robot.EventArguments;
 
 namespace Robot;
@@ -8,23 +9,27 @@ public class RobotManager : IRobotManager
     private Motor _xm;
     private Motor _ym;
     private readonly LoggerService<RobotManager> _logger;
-    public event EventHandler<PositionChangedEventArgs>? PositionChanged;
+    private readonly IMessageHub _messageHub;
 
-    public RobotManager(LoggerService<RobotManager> logger, Motor motorX, Motor motorY)
+    public RobotManager(LoggerService<RobotManager> logger, IMessageHub messageHub, Motor motorX, Motor motorY)
     {
         _xm = motorX;
         _ym = motorY;
         _logger = logger;
+        _messageHub = messageHub;
+
         _xm.SetName("x");
         _ym.SetName("y");
+
+        PositionChangedHandler();
     }
 
-    protected virtual void PositionChangedHandler()
+    private void PositionChangedHandler()
     {
         var x = _xm.GetPosition();
         var y = _ym.GetPosition();
         var eventArgs = new PositionChangedEventArgs(x, y);
-        PositionChanged?.Invoke(this, eventArgs);
+        _messageHub.Publish(eventArgs);
     }
 
     public async Task MoveTo(int x, int y)

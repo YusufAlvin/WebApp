@@ -1,6 +1,6 @@
 using LoggingLibrary;
 using Robot.Api;
-using Robot.Enums;
+using Data;
 
 namespace Robot;
 
@@ -12,7 +12,6 @@ public class Motor : IMotor
     private AutoResetEvent _waitPause;
     private string? _name;
     private readonly LoggerService<Motor> _logger;
-    public event EventHandler<bool> StopChanged;
 
     public Motor(LoggerService<Motor> logger)
     {
@@ -21,11 +20,6 @@ public class Motor : IMotor
         _motorAPI = new MotorAPI();
         _waitPause = new AutoResetEvent(true);
         _logger = logger;
-    }
-
-    protected void StopChangeHandler(bool value)
-    {
-        StopChanged?.Invoke(this, value);
     }
 
     public int GetPosition()

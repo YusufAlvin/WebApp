@@ -1,7 +1,9 @@
+import * as signalR from '@microsoft/signalr';
+import React from 'react';
 import './App.css';
 
 const data = {
-  sequence: [
+  sequences: [
     {
       id: 1,
       position: [8,8]
@@ -22,12 +24,25 @@ const data = {
 }
 
 const URL_LOCATION = `http://${window.location.host}`;
-const runSequenceApi = `${URL_LOCATION}/sequence/run-sequence`;
-const pauseSequenceApi = `${URL_LOCATION}/sequence/pause-sequence`;
-const resumeSequenceApi = `${URL_LOCATION}/sequence/resume-sequence`;
-const stopSequenceApi = `${URL_LOCATION}/sequence/stop-sequence`;
+const runSequenceApi = `${URL_LOCATION}/api/sequence/run-sequence`;
+const pauseSequenceApi = `${URL_LOCATION}/api/sequence/pause-sequence`;
+const resumeSequenceApi = `${URL_LOCATION}/api/sequence/resume-sequence`;
+const stopSequenceApi = `${URL_LOCATION}/api/sequence/stop-sequence`;
+const hubApi = `${URL_LOCATION}/hub/instrument-hub`;
 
 function App() {
+  React.useEffect(() => {
+    const connection = new signalR.HubConnectionBuilder()
+      .withUrl(hubApi)
+      .build();
+
+    connection.on("OnSequenceProgress", (data) => {
+      console.log('OnSequenceProgress', data);
+    });
+
+    connection.start();
+  }, []);
+
   const handleRunClick = async () => {
     fetch(runSequenceApi, {
       method: 'POST',
