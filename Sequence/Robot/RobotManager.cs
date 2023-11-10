@@ -24,21 +24,24 @@ public class RobotManager : IRobotManager
 
         _xm.SetName("x");
         _ym.SetName("y");
-        _xm.MotorChanged += MotorXChangedHandler;
-        _ym.MotorChanged += MotorYChangedHandler;
+        _xm.MotorChanged += MotorChangedHandler;
+        _ym.MotorChanged += MotorChangedHandler;
     }
 
-    protected virtual void MotorXChangedHandler(object sender, MotorEventArgs args)
+    protected virtual void MotorChangedHandler(object sender, MotorEventArgs args)
     {
         _eventArgs.Status = args.Status;
-        _eventArgs.CurrentPosition[0] = args.Position;
-        PublishRobotEvent();
-    }
 
-    protected virtual void MotorYChangedHandler(object sender, MotorEventArgs args)
-    {
-        _eventArgs.Status = args.Status;
-        _eventArgs.CurrentPosition[1] = args.Position;
+        switch(args.Name)
+        {
+            case "x":
+                _eventArgs.CurrentPosition[0] = args.Position;
+                break;
+            case "y":
+                _eventArgs.CurrentPosition[1] = args.Position;
+                break;
+        }
+
         PublishRobotEvent();
     }
 

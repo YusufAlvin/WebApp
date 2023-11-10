@@ -16,6 +16,8 @@ public class SequenceManager : ISequenceManager
     private readonly IMessageHub _messageHub;
     private int[] _currentPosition = new int[] {0,0};
 
+    public event EventHandler<SequenceProgress> OnSequenceProgressChanged;
+
     public Status Status
     {
         get { lock (statusLock) { return _status; } }
@@ -38,17 +40,17 @@ public class SequenceManager : ISequenceManager
         _status = arg.Status;
         _currentPosition = arg.CurrentPosition;
 
-        SequenceProgressChange();
+        OnSequenceProgressChangedHandler();
     }
 
-    private void SequenceProgressChange()
+    private void OnSequenceProgressChangedHandler()
     {
         var message = new SequenceProgress()
         {
             Status = _status.ToString(),
             CurrentPosition = _currentPosition,
         };
-        _messageHub.Publish(message);
+        OnSequenceProgressChanged?.Invoke(this, message);
     }
 
     public bool Start(SequenceDto sequenceDto)
