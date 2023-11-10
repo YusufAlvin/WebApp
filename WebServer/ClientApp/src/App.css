@@ -1,7 +1,13 @@
 .App {
   box-sizing: border-box;
   display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+}
+
+.row-2 {
+  display: flex;
   flex-direction: row;
   gap: 8px;
-  padding: 64px;
 }

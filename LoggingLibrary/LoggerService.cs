@@ -8,7 +8,7 @@ public class LoggerService<T> : ILoggerService
     private readonly ILog _log;
     public LoggerService()
     {
-        XmlConfigurator.Configure(new FileInfo(@"Config\log4net.config"));
+        XmlConfigurator.Configure(new FileInfo(@"Config/log4net.config"));
         _log = LogManager.GetLogger(typeof(T));
     }
 

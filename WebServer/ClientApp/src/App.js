@@ -31,6 +31,8 @@ const stopSequenceApi = `${URL_LOCATION}/api/sequence/stop-sequence`;
 const hubApi = `${URL_LOCATION}/hub/instrument-hub`;
 
 function App() {
+  const [status, setStatus] = React.useState("Idle");
+
   React.useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
       .withUrl(hubApi)
@@ -38,6 +40,7 @@ function App() {
 
     connection.on("OnSequenceProgress", (data) => {
       console.log('OnSequenceProgress', data);
+      setStatus(data.status);
     });
 
     connection.start();
@@ -85,10 +88,13 @@ function App() {
 
   return (
     <div className="App">
-      <button onClick={handleRunClick}>Run</button>
-      <button onClick={handlePauseClick}>Pause</button>
-      <button onClick={handleResumeClick}>Resume</button>
-      <button onClick={handleStopClick}>Stop</button>
+      <div className='row-1'>Status: {status}</div>
+      <div className='row-2'>
+        {(status === "Idle" || status === "Stopped") ? (<button onClick={handleRunClick}>Run</button>) : <></>}
+        {status === "Running" ? (<button onClick={handlePauseClick}>Pause</button>) : <></>}
+        {status === "Paused" ? (<button onClick={handleResumeClick}>Resume</button>) : <></>}
+        {(status === "Running" || status === "Paused") ? (<button onClick={handleStopClick}>Stop</button>) : <></>}
+      </div>
     </div>
   );
 }

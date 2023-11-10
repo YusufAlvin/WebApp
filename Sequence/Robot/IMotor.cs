@@ -1,3 +1,5 @@
+using Data;
+
 namespace Robot;
 
 public interface IMotor
@@ -8,4 +10,5 @@ public interface IMotor
     void Pause();
     void Resume();
     void SetName(string name);
+    Status GetStatus();
 }
